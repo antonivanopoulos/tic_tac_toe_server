@@ -19,7 +19,7 @@ defmodule TicTacServer.Mixfile do
   def application do
     [mod: {TicTacServer, []},
      applications: [:phoenix, :phoenix_pubsub, :phoenix_html, :cowboy, :logger, :gettext,
-                    :phoenix_ecto, :postgrex]]
+                    :phoenix_ecto, :postgrex, :edeliver]]
   end
 
   # Specifies which paths to compile per environment.
@@ -38,7 +38,8 @@ defmodule TicTacServer.Mixfile do
      {:phoenix_live_reload, "~> 1.0", only: :dev},
      {:gettext, "~> 0.11"},
      {:cowboy, "~> 1.0"},
-     {:distillery, "~> 1.0"}]
+     {:distillery, "~> 1.0"},
+     {:edeliver, "~> 1.4.2"}]
   end
 
   # Aliases are shortcuts or tasks specific to the current project.
