@@ -15,8 +15,6 @@ defmodule TicTacServer.Router do
 
   scope "/", TicTacServer do
     pipe_through :browser # Use the default browser stack
-
-    get "/", PageController, :index
   end
 
   # Other scopes may use custom stacks.
