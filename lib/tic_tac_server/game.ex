@@ -2,16 +2,15 @@ defmodule TicTacServer.Game do
   use GenServer
   alias TicTacServer.Game.Board
 
-  @winning_numbers [7, 56, 448, 73, 146, 292, 273, 84]
-
   defstruct [
     id: nil,
     player_x: nil,
     player_o: nil,
-    turns: [],
-    over: false,
+    next_player: nil,
     winner: nil,
-    ready: false
+    ready: false,
+    over: false,
+    turns: []
   ]
 
   # CLIENT:
@@ -79,7 +78,7 @@ defmodule TicTacServer.Game do
 
   defp check_ready_state(%__MODULE__{player_x: nil} = game), do: %{game | ready: false}
   defp check_ready_state(%__MODULE__{player_o: nil} = game), do: %{game | ready: false}
-  defp check_ready_state(%__MODULE__{player_x: player_id, player_o: opponent_id} = game), do: %{game | ready: true}
+  defp check_ready_state(%__MODULE__{player_x: player_id, player_o: opponent_id} = game), do: %{game | ready: true, next_player: player_id}
 
   defp update_turns(game, player_id, x: x, y: y) do
     %{game | turns: [%{player_id: player_id, x: x, y: y} | game.turns]}
@@ -88,18 +87,64 @@ defmodule TicTacServer.Game do
   defp check_for_completion(game) do
     board = Board.get_data(game.id)
 
-    IO.inspect(@winning_numbers)
-    IO.inspect(board.player_x_score)
-    IO.inspect(board.player_o_score)
     cond do
-      @winning_numbers |> Enum.member?(round(board.player_x_score)) ->
-        %{game | winner: game.player_x, over: true}
-      @winning_numbers |> Enum.member?(round(board.player_o_score)) ->
-        %{game | winner: game.player_o, over: true}
+      check_for_winner(board) ->
+        last_player = game |> Map.get(:turns) |> Enum.at(-1) |> Map.get(:player_id)
+        %{game | over: true, winner: last_player}
       check_for_full_board(board) ->
         %{game | over: true}
       true ->
         game
+    end
+  end
+
+  defp check_for_winner(board) do
+    grid = board
+    |> Map.get(:grid)
+    |> Map.values()
+
+    check_winner_rows(grid) || check_winner_columns(grid) || check_winner_diagonals(grid)
+  end
+
+  defp check_winner_rows(grid) do
+    case grid do
+      [ x, x, x,
+        _, _, _,
+        _, _, _] -> x != ""
+      [ _, _, _,
+        x, x, x,
+        _, _, _] -> x != ""
+      [ _, _, _,
+        _, _, _,
+        x, x, x] -> x != ""
+      _ -> false
+    end
+  end
+
+  defp check_winner_columns(grid) do
+    case grid do
+      [ x, _, _,
+        x, _, _,
+        x, _, _] -> x != ""
+      [ _, x, _,
+        _, x, _,
+        _, x, _] -> x != ""
+      [ _, _, x,
+        _, _, x,
+        _, _, x] -> x != ""
+      _ -> false
+    end
+  end
+
+  defp check_winner_diagonals(grid) do
+    case grid do
+      [ x, _, _,
+        _, x, _,
+        _, _, x] -> x != ""
+      [ _, _, x,
+        _, x, _,
+        x, _, _] -> x != ""
+      _ -> false
     end
   end
 
