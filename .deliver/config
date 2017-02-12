@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
-APP="edelivered_app" # <--- THIS MUST MATCH THE NAME OF THE RELEASE IN rel/config.exs
+APP="tic_tac_server" # <--- THIS MUST MATCH THE NAME OF THE RELEASE IN rel/config.exs
                      #      AND THE NAME OF THE APP IN config/mix.exs!!!!!!!!!!
 
 # Configuration of where the releases would be built.
-BUILD_HOST="139.59.106.8" # change to your server's IP address
+BUILD_HOST="tictactoe" # change to your server's IP address
 BUILD_USER="app"
-BUILD_AT="/home/app/mysite.com/edeliver_builds"
+BUILD_AT="/home/app/ttt.antonivanopoulos.com/edeliver_builds"
 
 # The location where built releases are going to be stored.
 RELEASE_STORE=app@tictactoe:/home/app/ttt.antonivanopoulos.com/edeliver_release_store/
 
 # Host and use of where the app would run.
-PRODUCTION_HOSTS="139.59.106.8" # same host in our case.
+PRODUCTION_HOSTS="tictactoe" # same host in our case.
 PRODUCTION_USER="app"
 
 DELIVER_TO="/home/app/ttt.antonivanopoulos.com"
