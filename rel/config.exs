@@ -31,7 +31,7 @@ environment :prod do
   set include_erts: true
   set include_src: false
   set cookie: :"|CJ4waSFy=KL&v]x=CfI)d5o%zjFa*WjNu.sWhs5b~dIZ*F,eH;G7T[^XL:[zRZD"
-  set output_dir: "rel/edelivered_app"
+  set output_dir: "rel/tic_tac_server"
 end
 
 # You may define one or more releases in this file.
